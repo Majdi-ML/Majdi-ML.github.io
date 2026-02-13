@@ -5,6 +5,7 @@ import { X, Minus, Maximize2, Minimize2 } from 'lucide-react';
 import { useWindowManager } from '../context/WindowManager';
 
 const windowSizes = {
+  profile: { width: 1100, height: 850 },
   about: { width: 780, height: 650 },
   projects: { width: 960, height: 700 },
   experience: { width: 900, height: 720 },
@@ -19,15 +20,51 @@ export default function Window({ id, title, icon: Icon, children }) {
   const nodeRef = useRef(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
   const isOpen = isWindowOpen(id);
   const isMinimized = isWindowMinimized(id);
   const isActive = activeWindow === id;
 
-  const size = windowSizes[id] || { width: 700, height: 500 };
+  const baseSize = windowSizes[id] || { width: 700, height: 500 };
+
+  // Responsive window sizing
+  useEffect(() => {
+    const updateSize = () => {
+      if (typeof window === 'undefined') return;
+      
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      
+      let scaleFactor = 1;
+      
+      // Adjust scale factor based on screen size
+      if (screenWidth < 480) {
+        scaleFactor = 0.9; // Mobile: 90% of viewport
+      } else if (screenWidth < 768) {
+        scaleFactor = 0.85; // Tablet: 85%
+      } else if (screenWidth < 1024) {
+        scaleFactor = 0.8; // Small laptop: 80%
+      }
+      
+      const maxWidth = screenWidth * scaleFactor;
+      const maxHeight = screenHeight * scaleFactor;
+      
+      const width = Math.min(baseSize.width, maxWidth);
+      const height = Math.min(baseSize.height, maxHeight);
+      
+      setWindowSize({ width, height });
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, [baseSize.width, baseSize.height]);
+
+  const size = windowSize.width > 0 ? windowSize : baseSize;
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && size.width > 0) {
       const offsetX = Math.random() * 100 - 50;
       const offsetY = Math.random() * 60 - 30;
       setPosition({

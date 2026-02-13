@@ -99,7 +99,28 @@ body {
 }
 
 /* Mobile Responsive */
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+  
   body {
     overflow-y: auto;
     overflow-x: hidden;
