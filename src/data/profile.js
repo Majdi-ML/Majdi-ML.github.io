@@ -1,3 +1,5 @@
+import majdiPhoto from '../assets/majdi.png';
+
 export const profile = {
   name: 'Majdi Melliti',
   title: 'Data Analytics & BI Engineer',
@@ -8,7 +10,7 @@ export const profile = {
   location: 'La Soukra, Ariana — Tunisia',
   linkedin: 'https://linkedin.com/in/majdi-melliti',
   github: 'https://github.com/Majdi-ML',
-  photo: '/src/assets/majdi.png',
+  photo: majdiPhoto,
 };
 
 export const kpis = [
