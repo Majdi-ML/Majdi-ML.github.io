@@ -22,6 +22,7 @@ export default function Window({ id, title, icon: Icon, children }) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [savedPosition, setSavedPosition] = useState({ x: 0, y: 0 });
+  const [viewport, setViewport] = useState({ width: 0, height: 0 });
 
   const isOpen = isWindowOpen(id);
   const isMinimized = isWindowMinimized(id);
@@ -30,6 +31,18 @@ export default function Window({ id, title, icon: Icon, children }) {
   const baseSize = windowSizes[id] || { width: 700, height: 500 };
 
   // Responsive window sizing
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const updateViewport = () => {
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
   useEffect(() => {
     const updateSize = () => {
       if (typeof window === 'undefined') return;
@@ -79,6 +92,9 @@ export default function Window({ id, title, icon: Icon, children }) {
 
   const zIndex = isActive ? zCounter : (zCounter - 10);
 
+  const maximizedWidth = Math.max(320, viewport.width - 16);
+  const maximizedHeight = Math.max(240, viewport.height - 68);
+
   const toggleMaximize = () => {
     if (!isMaximized) {
       // Avant de maximiser, sauvegarder la position actuelle
@@ -99,7 +115,7 @@ export default function Window({ id, title, icon: Icon, children }) {
           nodeRef={nodeRef}
           handle=".window-handle"
           disabled={isMaximized}
-          position={isMaximized ? { x: 0, y: 0 } : position}
+          position={isMaximized ? { x: 8, y: 8 } : position}
           onDrag={(e, data) => {
             if (!isMaximized) {
               setPosition({ x: data.x, y: data.y });
@@ -120,13 +136,10 @@ export default function Window({ id, title, icon: Icon, children }) {
                 ${isActive
                   ? 'border-white/15 shadow-black/50'
                   : 'border-white/8 shadow-black/30'}
-                ${isMaximized
-                  ? 'fixed inset-2 bottom-16 !w-auto !h-auto'
-                  : ''}
               `}
               style={
                 isMaximized
-                  ? { position: 'fixed', inset: '8px 8px 60px', width: 'auto', height: 'auto' }
+                  ? { width: maximizedWidth, height: maximizedHeight }
                   : { width: size.width, height: size.height }
               }
             >
@@ -187,7 +200,7 @@ export default function Window({ id, title, icon: Icon, children }) {
 
               {/* Content */}
               <div className="relative overflow-y-auto custom-scrollbar"
-                   style={{ height: isMaximized ? 'calc(100% - 44px)' : size.height - 44 }}>
+                   style={{ height: (isMaximized ? maximizedHeight : size.height) - 44 }}>
                 {children}
               </div>
             </motion.div>

@@ -20,7 +20,7 @@ export default function ProjectsContent() {
   const filtered = active === 'All' ? projects : projects.filter((p) => p.category === active);
 
   return (
-    <div className="p-7 space-y-7">
+    <div className="window-content-shell">
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {kpis.map((kpi, i) => (
@@ -46,7 +46,7 @@ export default function ProjectsContent() {
       </div>
 
       {/* Project Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {filtered.map((project, i) => {
           const style = categoryStyle[project.category] || categoryStyle['Web App'];
           const CategoryIcon = style.icon;
@@ -56,7 +56,7 @@ export default function ProjectsContent() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className="group rounded-xl bg-white/[0.03] border border-white/[0.06]
+              className="group window-item-card rounded-xl
                          hover:bg-white/[0.06] hover:border-blue-500/20
                          transition-all duration-300 overflow-hidden"
             >

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { skills, kpis } from '../../data/profile';
-import AnimatedProgress from '../ui/AnimatedProgress';
 import KpiCard from '../ui/KpiCard';
 import TechIcon from '../ui/TechIcon';
 
@@ -23,7 +22,7 @@ export default function SkillsContent() {
     activeCategory === 'All' ? skills : skills.filter((s) => s.category === activeCategory);
 
   return (
-    <div className="p-7 space-y-7">
+    <div className="window-content-shell">
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {kpis.map((kpi, i) => (
@@ -48,8 +47,8 @@ export default function SkillsContent() {
         ))}
       </div>
 
-      {/* Skills Grid */}
-      <div className="space-y-3">
+      {/* Skills Icons */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {filtered.map((skill, i) => {
           const colors = categoryColors[skill.category] || categoryColors['DevOps'];
           return (
@@ -58,22 +57,17 @@ export default function SkillsContent() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04 }}
-              className="group p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]
-                         hover:bg-white/[0.05] transition-all duration-300"
+              className="group p-3 window-item-card hover:bg-white/[0.06] transition-all duration-300"
             >
-              <div className="flex items-center justify-between mb-2.5">
-                <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-md ${colors.bg} flex items-center justify-center`}>
-                    <TechIcon iconKey={skill.icon} size={17} />
-                  </div>
-                  <span className="text-base font-medium text-white/90">{skill.name}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-md ${colors.bg} ${colors.text}`}>
-                    {skill.category}
-                  </span>
+              <div className="flex flex-col items-center text-center gap-2">
+                <div className={`w-10 h-10 rounded-lg ${colors.bg} flex items-center justify-center`}>
+                  <TechIcon iconKey={skill.icon} size={20} />
                 </div>
-                <span className="text-sm text-white/50 font-mono">{skill.level}%</span>
+                <span className="text-sm font-medium text-white/90 leading-tight">{skill.name}</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-md ${colors.bg} ${colors.text}`}>
+                  {skill.category}
+                </span>
               </div>
-              <AnimatedProgress value={skill.level} gradient={colors.bar} delay={i * 0.04} />
             </motion.div>
           );
         })}

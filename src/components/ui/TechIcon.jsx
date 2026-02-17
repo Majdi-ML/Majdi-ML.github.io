@@ -1,6 +1,6 @@
 // Maps skill icon keys to devicon CSS class names
 const iconClassMap = {
-  powerbi: 'devicon-azure-plain colored',
+  powerbi: 'devicon-powerbi-plain colored',
   tableau: 'devicon-graphql-plain colored',
   talend: 'devicon-apachekafka-original',
   grafana: 'devicon-grafana-original colored',

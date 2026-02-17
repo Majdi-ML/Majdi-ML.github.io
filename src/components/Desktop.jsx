@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import majdiPhoto from '../assets/majdi.png';
 import {
   User,
+  Folder,
   FolderKanban,
   Briefcase,
   BarChart3,
@@ -49,7 +50,7 @@ function Clock() {
   );
 }
 
-function DesktopIcon({ id, label, icon: Icon }) {
+function DesktopIcon({ id, label }) {
   const { openWindow } = useWindowManager();
   return (
     <motion.button
@@ -60,11 +61,12 @@ function DesktopIcon({ id, label, icon: Icon }) {
       className="flex flex-col items-center gap-2 p-4 rounded-lg w-24 cursor-pointer
                  hover:bg-white/10 transition-colors duration-200 group"
     >
-      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500/30 to-purple-600/30
-                      border border-white/10 flex items-center justify-center
-                      group-hover:border-blue-400/40 group-hover:shadow-lg
-                      group-hover:shadow-blue-500/20 transition-all duration-300">
-        <Icon size={26} className="text-blue-300 group-hover:text-blue-200 transition-colors" />
+      <div className="w-14 h-14 rounded-xl bg-gradient-to-b from-amber-200/90 to-amber-400/90
+                      border border-amber-100/80 flex items-center justify-center
+                      group-hover:from-amber-100 group-hover:to-amber-300
+                      group-hover:shadow-lg group-hover:shadow-amber-400/30
+                      transition-all duration-300">
+        <Folder size={28} className="text-amber-900/85 group-hover:text-amber-950 transition-colors" />
       </div>
       <span className="text-xs text-white font-medium text-center leading-tight
                        drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">

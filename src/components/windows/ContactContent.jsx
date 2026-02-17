@@ -9,8 +9,16 @@ export default function ContactContent() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const subject = encodeURIComponent(`Portfolio Contact - ${form.name || 'Visitor'}`);
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
+    );
+
+    window.location.href = `mailto:majdi.melliti@esprit.tn?subject=${subject}&body=${body}`;
+
     setSent(true);
-    setTimeout(() => setSent(false), 3000);
+    setTimeout(() => setSent(false), 2500);
   };
 
   const contacts = [
@@ -22,7 +30,7 @@ export default function ContactContent() {
   ];
 
   return (
-    <div className="p-7 space-y-7">
+    <div className="window-content-shell">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
@@ -35,7 +43,7 @@ export default function ContactContent() {
       </motion.div>
 
       {/* Contact Cards */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {contacts.map((c, i) => (
           <motion.a
             key={c.label}
@@ -45,7 +53,7 @@ export default function ContactContent() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.08 }}
-            className="group flex items-center gap-3 p-4 rounded-xl bg-white/[0.03]
+            className="group flex items-center gap-3 p-4 window-item-card
                        border border-white/[0.06] hover:bg-white/[0.06]
                        hover:border-blue-500/20 transition-all duration-300"
           >
@@ -62,59 +70,64 @@ export default function ContactContent() {
       </div>
 
       {/* Contact Form */}
-      <motion.form
+      <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        onSubmit={handleSubmit}
-        className="space-y-3 p-5 rounded-xl bg-white/[0.02] border border-white/[0.06]"
+        className="form-card1"
       >
-        <h4 className="text-base font-semibold text-white/80 mb-3">Send a Message</h4>
-        <div className="grid grid-cols-2 gap-3">
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white
-                       placeholder:text-white/25 outline-none focus:border-blue-500/40
-                       transition-colors"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white
-                       placeholder:text-white/25 outline-none focus:border-blue-500/40
-                       transition-colors"
-          />
+        <div className="form-card2">
+          <form className="form" onSubmit={handleSubmit}>
+            <p className="form-heading">Send a Message</p>
+
+            <div className="form-field">
+              <input
+                required
+                type="text"
+                className="input-field"
+                placeholder="Your Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field">
+              <Mail size={16} className="text-cyan-300/80" />
+              <input
+                required
+                type="email"
+                className="input-field"
+                placeholder="Your Email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field">
+              <textarea
+                required
+                rows={4}
+                className="input-field"
+                placeholder="Your message..."
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+              />
+            </div>
+
+            <button type="submit" className="sendMessage-btn flex items-center justify-center gap-2">
+              {sent ? (
+                <>
+                  <CheckCircle size={14} /> Sent!
+                </>
+              ) : (
+                <>
+                  <Send size={14} /> Send Message
+                </>
+              )}
+            </button>
+          </form>
         </div>
-        <textarea
-          placeholder="Your message..."
-          rows={3}
-          value={form.message}
-          onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white
-                     placeholder:text-white/25 outline-none focus:border-blue-500/40
-                     transition-colors resize-none"
-        />
-        <button
-          type="submit"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30
-                     text-sm text-blue-400 hover:bg-blue-500/30 transition-colors cursor-pointer"
-        >
-          {sent ? (
-            <>
-              <CheckCircle size={14} /> Sent!
-            </>
-          ) : (
-            <>
-              <Send size={14} /> Send Message
-            </>
-          )}
-        </button>
-      </motion.form>
+      </motion.div>
     </div>
   );
 }

@@ -11,13 +11,12 @@ const typeColors = {
 
 export default function ExperienceContent() {
   return (
-    <div className="p-8 space-y-7">
+    <div className="window-content-shell">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-5 rounded-xl bg-gradient-to-r from-blue-500/10 to-purple-500/10
-                   border border-blue-500/15"
+        className="window-hero-card"
       >
         <h3 className="text-lg font-bold text-white/90 mb-2">Professional Experience</h3>
         <p className="text-sm text-white/50">
@@ -30,7 +29,7 @@ export default function ExperienceContent() {
         {/* Timeline Line */}
         <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/50 via-purple-500/30 to-transparent" />
 
-        <div className="space-y-6">
+        <div className="space-y-7">
           {experiences.map((exp, i) => {
             const typeStyle = typeColors[exp.type] || typeColors['internship'];
             return (
@@ -51,7 +50,7 @@ export default function ExperienceContent() {
                 <div className="absolute left-[23px] top-5 w-7 h-px bg-blue-500/30" />
 
                 {/* Card */}
-                <div className="group p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]
+                <div className="group p-5 window-item-card
                                hover:bg-white/[0.06] hover:border-blue-500/20
                                transition-all duration-300">
                   {/* Period & Type Badges */}
@@ -114,7 +113,7 @@ export default function ExperienceContent() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+        className="window-section-card"
       >
         <h3 className="text-sm font-semibold text-white/90 mb-4 flex items-center gap-2">
           <GraduationCap size={16} className="text-purple-400" />

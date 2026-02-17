@@ -14,7 +14,7 @@ const highlights = [
 
 export default function AboutContent() {
   return (
-    <div className="p-7 space-y-7">
+    <div className="window-content-shell">
       {/* Profile Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -51,21 +51,21 @@ export default function AboutContent() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+        className="window-section-card"
       >
         <h3 className="text-base font-semibold text-white/90 mb-3">Profile</h3>
         <p className="text-base text-white/60 leading-relaxed">{profile.bio}</p>
       </motion.div>
 
       {/* Highlights Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {highlights.map((item, i) => (
           <motion.div
             key={item.label}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 + i * 0.06 }}
-            className="group p-5 rounded-xl bg-white/[0.03] border border-white/[0.06]
+            className="group p-5 window-item-card
                        hover:bg-white/[0.06] hover:border-blue-500/20 transition-all duration-300"
           >
             <div className="flex items-center gap-3">
@@ -83,12 +83,12 @@ export default function AboutContent() {
       </div>
 
       {/* Languages & Soft Skills */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
-          className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+          className="window-section-card"
         >
           <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-3">Languages</h4>
           <div className="space-y-2.5">
@@ -104,7 +104,7 @@ export default function AboutContent() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]"
+          className="window-section-card"
         >
           <h4 className="text-sm font-semibold text-white/70 uppercase tracking-wider mb-3">Activities</h4>
           <div className="space-y-2">
@@ -120,7 +120,7 @@ export default function AboutContent() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
-        className="flex gap-3"
+        className="flex flex-wrap gap-3 pt-1"
       >
         <a
           href={profile.linkedin}
