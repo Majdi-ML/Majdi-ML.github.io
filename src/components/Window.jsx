@@ -21,6 +21,7 @@ export default function Window({ id, title, icon: Icon, children }) {
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [savedPosition, setSavedPosition] = useState({ x: 0, y: 0 });
 
   const isOpen = isWindowOpen(id);
   const isMinimized = isWindowMinimized(id);
@@ -67,16 +68,25 @@ export default function Window({ id, title, icon: Icon, children }) {
     if (typeof window !== 'undefined' && size.width > 0) {
       const offsetX = Math.random() * 100 - 50;
       const offsetY = Math.random() * 60 - 30;
-      setPosition({
+      const newPos = {
         x: Math.max(20, (window.innerWidth - size.width) / 2 + offsetX),
         y: Math.max(20, (window.innerHeight - size.height) / 2 + offsetY - 30),
-      });
+      };
+      setPosition(newPos);
+      setSavedPosition(newPos);
     }
   }, [size.width, size.height]);
 
   const zIndex = isActive ? zCounter : (zCounter - 10);
 
   const toggleMaximize = () => {
+    if (!isMaximized) {
+      // Avant de maximiser, sauvegarder la position actuelle
+      setSavedPosition(position);
+    } else {
+      // Lors du restore, revenir à la position sauvegardée
+      setPosition(savedPosition);
+    }
     setIsMaximized(!isMaximized);
   };
 
@@ -89,7 +99,12 @@ export default function Window({ id, title, icon: Icon, children }) {
           nodeRef={nodeRef}
           handle=".window-handle"
           disabled={isMaximized}
-          defaultPosition={position}
+          position={isMaximized ? { x: 0, y: 0 } : position}
+          onDrag={(e, data) => {
+            if (!isMaximized) {
+              setPosition({ x: data.x, y: data.y });
+            }
+          }}
           onStart={() => focusWindow(id)}
         >
           <div ref={nodeRef} style={{ position: 'fixed', zIndex }} className="will-change-transform">
