@@ -6,12 +6,13 @@ import { useWindowManager } from '../context/WindowManager';
 
 const windowSizes = {
   profile: { width: 1100, height: 850 },
-  about: { width: 780, height: 650 },
-  projects: { width: 960, height: 700 },
-  experience: { width: 900, height: 720 },
-  skills: { width: 920, height: 700 },
-  contact: { width: 680, height: 600 },
-  cv: { width: 840, height: 680 },
+  about: { width: 800, height: 680 },
+  projects: { width: 980, height: 720 },
+  experience: { width: 960, height: 800 },
+  skills: { width: 940, height: 720 },
+  contact: { width: 700, height: 620 },
+  education: { width: 750, height: 650 },
+  cv: { width: 860, height: 700 },
 };
 
 export default function Window({ id, title, icon: Icon, children }) {
@@ -30,14 +31,11 @@ export default function Window({ id, title, icon: Icon, children }) {
 
   const baseSize = windowSizes[id] || { width: 700, height: 500 };
 
-  // Responsive window sizing
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
     const updateViewport = () => {
       setViewport({ width: window.innerWidth, height: window.innerHeight });
     };
-
     updateViewport();
     window.addEventListener('resize', updateViewport);
     return () => window.removeEventListener('resize', updateViewport);
@@ -46,27 +44,18 @@ export default function Window({ id, title, icon: Icon, children }) {
   useEffect(() => {
     const updateSize = () => {
       if (typeof window === 'undefined') return;
-      
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      
+
       let scaleFactor = 1;
-      
-      // Adjust scale factor based on screen size
-      if (screenWidth < 480) {
-        scaleFactor = 0.9; // Mobile: 90% of viewport
-      } else if (screenWidth < 768) {
-        scaleFactor = 0.85; // Tablet: 85%
-      } else if (screenWidth < 1024) {
-        scaleFactor = 0.8; // Small laptop: 80%
-      }
-      
+      if (screenWidth < 480) scaleFactor = 0.92;
+      else if (screenWidth < 768) scaleFactor = 0.88;
+      else if (screenWidth < 1024) scaleFactor = 0.82;
+
       const maxWidth = screenWidth * scaleFactor;
       const maxHeight = screenHeight * scaleFactor;
-      
       const width = Math.min(baseSize.width, maxWidth);
       const height = Math.min(baseSize.height, maxHeight);
-      
       setWindowSize({ width, height });
     };
 
@@ -79,8 +68,8 @@ export default function Window({ id, title, icon: Icon, children }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && size.width > 0) {
-      const offsetX = Math.random() * 100 - 50;
-      const offsetY = Math.random() * 60 - 30;
+      const offsetX = Math.random() * 80 - 40;
+      const offsetY = Math.random() * 50 - 25;
       const newPos = {
         x: Math.max(20, (window.innerWidth - size.width) / 2 + offsetX),
         y: Math.max(20, (window.innerHeight - size.height) / 2 + offsetY - 30),
@@ -92,21 +81,21 @@ export default function Window({ id, title, icon: Icon, children }) {
 
   const zIndex = isActive ? zCounter : (zCounter - 10);
 
-  const maximizedWidth = Math.max(320, viewport.width - 16);
-  const maximizedHeight = Math.max(240, viewport.height - 68);
+  const maximizedWidth = Math.max(320, viewport.width);
+  const maximizedHeight = Math.max(240, viewport.height - 52);
 
   const toggleMaximize = () => {
     if (!isMaximized) {
-      // Avant de maximiser, sauvegarder la position actuelle
       setSavedPosition(position);
     } else {
-      // Lors du restore, revenir à la position sauvegardée
       setPosition(savedPosition);
     }
     setIsMaximized(!isMaximized);
   };
 
   if (!isOpen) return null;
+
+  const titleBarHeight = 38;
 
   return (
     <AnimatePresence>
@@ -115,7 +104,7 @@ export default function Window({ id, title, icon: Icon, children }) {
           nodeRef={nodeRef}
           handle=".window-handle"
           disabled={isMaximized}
-          position={isMaximized ? { x: 8, y: 8 } : position}
+          position={isMaximized ? { x: 0, y: 0 } : position}
           onDrag={(e, data) => {
             if (!isMaximized) {
               setPosition({ x: data.x, y: data.y });
@@ -125,17 +114,17 @@ export default function Window({ id, title, icon: Icon, children }) {
         >
           <div ref={nodeRef} style={{ position: 'fixed', zIndex }} className="will-change-transform">
             <motion.div
-              initial={{ opacity: 0, scale: 0.88, y: 30 }}
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.88, y: 30 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 30, mass: 0.8 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 32, mass: 0.7 }}
               onClick={() => focusWindow(id)}
               className={`
-                rounded-xl overflow-hidden border
-                shadow-2xl
+                overflow-hidden
+                ${isMaximized ? '' : 'rounded-lg'}
                 ${isActive
-                  ? 'border-white/15 shadow-black/50'
-                  : 'border-white/8 shadow-black/30'}
+                  ? 'win-window-active'
+                  : 'win-window-inactive'}
               `}
               style={
                 isMaximized
@@ -143,64 +132,66 @@ export default function Window({ id, title, icon: Icon, children }) {
                   : { width: size.width, height: size.height }
               }
             >
-              {/* Glass Background */}
-              <div className="absolute inset-0 bg-[#0d1117]/85 backdrop-blur-2xl" />
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
+              {/* Mica-like background */}
+              <div className={`absolute inset-0 ${isActive ? 'bg-[#1c1c2e]/92' : 'bg-[#1a1a28]/88'} backdrop-blur-3xl`} />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-white/[0.02]" />
+              {/* Top highlight line */}
+              {isActive && !isMaximized && (
+                <div className="absolute top-0 left-3 right-3 h-[1px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent" />
+              )}
 
               {/* Title Bar */}
               <div
-                className="window-handle relative flex items-center justify-between px-4 py-2.5
-                           border-b border-white/8 cursor-move select-none"
+                className={`window-handle relative flex items-center justify-between px-3 cursor-move select-none
+                            ${isActive ? 'border-b border-white/[0.08]' : 'border-b border-white/[0.05]'}`}
+                style={{ height: titleBarHeight }}
+                onDoubleClick={toggleMaximize}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   {Icon && (
-                    <div className="w-5 h-5 flex items-center justify-center">
-                      <Icon size={14} className="text-blue-400" />
+                    <div className="w-4 h-4 flex items-center justify-center">
+                      <Icon size={13} className={isActive ? 'text-blue-400' : 'text-white/30'} />
                     </div>
                   )}
-                  <span className="text-sm font-medium text-white/90">{title}</span>
+                  <span className={`text-[13px] font-medium ${isActive ? 'text-white/85' : 'text-white/40'}`}>
+                    {title}
+                  </span>
                 </div>
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center">
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      minimizeWindow(id);
-                    }}
-                    className="w-8 h-7 flex items-center justify-center rounded-md
-                               hover:bg-white/10 transition-colors cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); minimizeWindow(id); }}
+                    className="w-[46px] flex items-center justify-center rounded-sm
+                               hover:bg-white/[0.08] transition-colors duration-150 cursor-pointer"
+                    style={{ height: titleBarHeight }}
                   >
-                    <Minus size={14} className="text-white/60" />
+                    <Minus size={14} className="text-white/50" />
                   </button>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleMaximize();
-                    }}
-                    className="w-8 h-7 flex items-center justify-center rounded-md
-                               hover:bg-white/10 transition-colors cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); toggleMaximize(); }}
+                    className="w-[46px] flex items-center justify-center rounded-sm
+                               hover:bg-white/[0.08] transition-colors duration-150 cursor-pointer"
+                    style={{ height: titleBarHeight }}
                   >
                     {isMaximized ? (
-                      <Minimize2 size={12} className="text-white/60" />
+                      <Minimize2 size={12} className="text-white/50" />
                     ) : (
-                      <Maximize2 size={12} className="text-white/60" />
+                      <Maximize2 size={12} className="text-white/50" />
                     )}
                   </button>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      closeWindow(id);
-                    }}
-                    className="w-8 h-7 flex items-center justify-center rounded-md
-                               hover:bg-red-500/80 transition-colors group cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); closeWindow(id); }}
+                    className="w-[46px] flex items-center justify-center rounded-sm
+                               hover:bg-[#c42b1c] transition-colors duration-150 group cursor-pointer"
+                    style={{ height: titleBarHeight }}
                   >
-                    <X size={14} className="text-white/60 group-hover:text-white" />
+                    <X size={14} className="text-white/50 group-hover:text-white" />
                   </button>
                 </div>
               </div>
 
               {/* Content */}
               <div className="relative overflow-y-auto custom-scrollbar"
-                   style={{ height: (isMaximized ? maximizedHeight : size.height) - 44 }}>
+                   style={{ height: (isMaximized ? maximizedHeight : size.height) - titleBarHeight }}>
                 {children}
               </div>
             </motion.div>

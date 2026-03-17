@@ -1,4 +1,4 @@
-import majdiPhoto from '../assets/majdi.png';
+import majdiPhoto from '../assets/majdi.webp';
 
 export const profile = {
   name: 'Majdi Melliti',

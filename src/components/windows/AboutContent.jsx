@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { MapPin, Mail, Github, Linkedin, Phone, Database, BarChart3, Code2, Server, Brain, Award } from 'lucide-react';
 import { profile, languages, softSkills, activities } from '../../data/profile';
-import majdiPhoto from '../../assets/majdi.png';
+import majdiPhoto from '../../assets/majdi.webp';
 
 const highlights = [
   { icon: Database, label: 'Data Engineering', desc: 'ETL, Talend, Pipelines' },

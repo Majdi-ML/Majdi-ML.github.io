@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import majdiPhoto from '../assets/majdi.png';
+import majdiPhoto from '../assets/majdiii.webp';
 
 // ─── Shared mouse hook ───
 function useMousePosition() {
@@ -474,8 +474,9 @@ export default function BootScreen({ onComplete }) {
       {/* Content */}
       <AnimatePresence>
         {showContent && (
-          <div className="relative z-10 flex flex-col items-center justify-center gap-5">
-            {/* Photo with holographic frame */}
+          <>
+            {/* Photo — absolute center of screen (galaxy core) */}
+            <div className="absolute z-10 inset-0 flex items-center justify-center" style={{ height: '100vh', pointerEvents: 'none' }}>
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={isEntering
@@ -486,7 +487,8 @@ export default function BootScreen({ onComplete }) {
                 ? { duration: 1.5, ease: 'easeIn' }
                 : { duration: 1, type: 'spring', stiffness: 100 }
               }
-              className="relative mb-4"
+              className="relative"
+              style={{ pointerEvents: 'auto' }}
             >
               <div className="boot-holo-wrapper">
                 <div className="boot-holo-frame" />
@@ -503,7 +505,7 @@ export default function BootScreen({ onComplete }) {
                 <motion.div
                   key={i}
                   className="boot-orbit-dot"
-                  style={{ '--orbit-delay': `${i * -1.5}s`, '--orbit-size': `${170 + i * 20}px` }}
+                  style={{ '--orbit-delay': `${i * -1.5}s`, '--orbit-size': `${250 + i * 28}px` }}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 6 + i, repeat: Infinity, ease: 'linear', delay: i * 0.3 }}
                 />
@@ -520,78 +522,80 @@ export default function BootScreen({ onComplete }) {
                 />
               ))}
             </motion.div>
+            </div>
 
-            {/* Name with glitch */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={isEntering
-                ? { opacity: 0, scale: 0, y: -100 }
-                : { opacity: 1, y: 0 }
-              }
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="flex flex-col items-center gap-3"
-            >
-              <h1 className="boot-title">
-                <GlitchText text="Majdi Melliti" />
-              </h1>
-
+            {/* Text + Button — below the photo */}
+            <div className="absolute z-10 flex flex-col items-center" style={{ top: 'calc(50% + 145px)', left: '50%', transform: 'translateX(-50%)' }}>
               <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: isEntering ? 0 : 1 }}
-                transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
-                className="boot-separator"
-              />
+                initial={{ opacity: 0, y: 40 }}
+                animate={isEntering
+                  ? { opacity: 0, scale: 0, y: -100 }
+                  : { opacity: 1, y: 0 }
+                }
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="flex flex-col items-center gap-4"
+              >
+                <h1 className="boot-title">
+                  <GlitchText text="Majdi Melliti" />
+                </h1>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isEntering ? 0 : 1 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
-                className="boot-subtitle"
-              >
-                Data & BI Engineer
-              </motion.p>
-            </motion.div>
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: isEntering ? 0 : 1 }}
+                  transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
+                  className="boot-separator"
+                />
 
-            {/* Enter zone */}
-            {!isEntering ? (
-              <motion.button
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.92 }}
-                onClick={handleEnter}
-                className="boot-portal-btn mt-6"
-              >
-                <span className="boot-portal-ring" />
-                <span className="boot-portal-ring boot-portal-ring-2" />
-                <span className="boot-portal-text">ENTER</span>
-              </motion.button>
-            ) : (
-              <motion.div
-                initial={{ opacity: 1 }}
-                animate={{ opacity: 0, scale: 3 }}
-                transition={{ duration: 1.5 }}
-                className="mt-6 flex items-center gap-3"
-              >
-                <span className="text-sm text-cyan-300/60 tracking-[0.5em] uppercase font-light">
-                  Initialisation...
-                </span>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isEntering ? 0 : 1 }}
+                  transition={{ delay: 0.8, duration: 0.6 }}
+                  className="boot-subtitle"
+                >
+                  Data & BI Engineer
+                </motion.p>
               </motion.div>
-            )}
 
-            {/* Hint */}
-            {!isEntering && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.3 }}
-                transition={{ delay: 2.5, duration: 1.5 }}
-                className="text-[11px] text-white/20 mt-2 tracking-[0.4em] uppercase font-light"
-              >
-                Deplacez la souris pour deformer le champ gravitationnel
-              </motion.p>
-            )}
-          </div>
+              {/* Square Enter button */}
+              {!isEntering ? (
+                <motion.button
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.2, duration: 0.6 }}
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={handleEnter}
+                  className="boot-enter-btn mt-8"
+                >
+                  <span className="boot-enter-border" />
+                  <span className="boot-enter-text">ENTER</span>
+                </motion.button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 0, scale: 3 }}
+                  transition={{ duration: 1.5 }}
+                  className="mt-8 flex items-center gap-3"
+                >
+                  <span className="text-sm text-cyan-300/60 tracking-[0.5em] uppercase font-light">
+                    Initialisation...
+                  </span>
+                </motion.div>
+              )}
+
+              {/* Hint */}
+              {!isEntering && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.3 }}
+                  transition={{ delay: 2.5, duration: 1.5 }}
+                  className="text-[11px] text-white/20 mt-4 tracking-[0.4em] uppercase font-light"
+                >
+                  Deplacez la souris pour deformer le champ gravitationnel
+                </motion.p>
+              )}
+            </div>
+          </>
         )}
       </AnimatePresence>
 

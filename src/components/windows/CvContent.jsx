@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Download, FileText, Briefcase, GraduationCap, Wrench, Globe, Award, MapPin, Mail, Phone } from 'lucide-react';
 import { profile, skills, experiences, education, languages, activities } from '../../data/profile';
-import majdiPhoto from '../../assets/majdi.png';
+import majdiPhoto from '../../assets/majdi.webp';
 
 function SectionTitle({ icon, label }) {
   return (
