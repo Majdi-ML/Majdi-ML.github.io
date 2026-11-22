@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import CertificateModal from '../ui/CertificateModal';
 import { Download, FileText, Briefcase, GraduationCap, Wrench, Globe, Award, MapPin, Mail, Phone } from 'lucide-react';
-import { profile, skills, experiences, education, languages, activities } from '../../data/profile';
+import { profile, skills, experiences, education, languages, activities, certifications } from '../../data/profile';
 import majdiPhoto from '../../assets/majdi.webp';
 
 function SectionTitle({ icon, label }) {
@@ -14,17 +16,19 @@ function SectionTitle({ icon, label }) {
 
 export default function CvContent() {
   const topSkills = skills.slice(0, 12);
+  const [selectedCert, setSelectedCert] = useState(null);
 
   return (
     <div className="window-content-shell">
+      <CertificateModal cert={selectedCert} onClose={() => setSelectedCert(null)} />
 
       {/* ── Header ── */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-start justify-between gap-6"
+        className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6"
       >
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4 sm:gap-5 min-w-0">
           <div className="relative shrink-0">
             <img
               src={majdiPhoto}
@@ -33,7 +37,7 @@ export default function CvContent() {
             />
             <span className="absolute bottom-1 right-1 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0d1117]" />
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 min-w-0">
             <h2 className="text-2xl font-bold text-white leading-none">{profile.name}</h2>
             <p className="text-blue-400 text-sm font-semibold tracking-wide">{profile.title}</p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-0.5">
@@ -41,7 +45,7 @@ export default function CvContent() {
                 <MapPin size={11} className="text-white/30" /> {profile.location}
               </span>
               <span className="flex items-center gap-1.5 text-xs text-white/40">
-                <Mail size={11} className="text-white/30" /> {profile.email}
+                <Mail size={11} className="text-white/30 shrink-0" /> <span className="break-all">{profile.email}</span>
               </span>
               <span className="flex items-center gap-1.5 text-xs text-white/40">
                 <Phone size={11} className="text-white/30" /> {profile.phone}
@@ -135,6 +139,36 @@ export default function CvContent() {
                   <span className="text-white/30">{edu.period}</span>
                 </div>
               </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ── Certifications ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
+        className="window-section-card space-y-4"
+      >
+        <SectionTitle icon={<Award size={15} className="text-amber-400" />} label="Certifications" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {certifications.map((group) => (
+            <div key={group.category} className="space-y-1.5">
+              <div className="text-xs font-semibold text-white/70">{group.category}</div>
+              <ul className="space-y-1">
+                {group.items.map((c) => (
+                  <li key={c.title}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCert({ ...c, category: group.category })}
+                      className="flex items-start gap-2 text-xs text-white/50 text-left w-full rounded px-1 -mx-1 py-0.5
+                                 hover:text-amber-200 hover:bg-white/[0.04] transition-colors cursor-pointer"
+                    >
+                      <span className="mt-[5px] w-1.5 h-1.5 rounded-full bg-amber-400/60 shrink-0" />
+                      <span>{c.issuer} — {c.title} <span className="text-white/30">({c.date})</span></span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>

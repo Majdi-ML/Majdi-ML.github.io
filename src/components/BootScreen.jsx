@@ -552,7 +552,7 @@ export default function BootScreen({ onComplete }) {
                   transition={{ delay: 0.8, duration: 0.6 }}
                   className="boot-subtitle"
                 >
-                  Data & BI Engineer
+                  Data & BI Analyst
                 </motion.p>
               </motion.div>
 

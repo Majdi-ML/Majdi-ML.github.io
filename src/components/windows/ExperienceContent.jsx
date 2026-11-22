@@ -74,9 +74,9 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
                     }`}
       >
         {/* Main content */}
-        <div className="px-7 pt-7 pb-6">
+        <div className="px-4 pt-5 pb-5 sm:px-7 sm:pt-7 sm:pb-6">
           {/* Top: Icon + Meta + Chevron */}
-          <div className="flex items-start gap-5">
+          <div className="flex items-start gap-3 sm:gap-5">
             {/* Company icon */}
             <div className="relative shrink-0">
               <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${config.gradient}
@@ -93,7 +93,7 @@ function ExperienceCard({ exp, index, isExpanded, onToggle }) {
 
             {/* Title + Company */}
             <div className="flex-1 min-w-0 pt-0.5">
-              <h4 className="text-lg font-semibold text-white/95 leading-normal">
+              <h4 className="text-base sm:text-lg font-semibold text-white/95 leading-normal break-words">
                 {exp.role}
               </h4>
               <div className="flex items-center gap-2 mt-2 text-sm text-white/45">
@@ -197,7 +197,7 @@ export default function ExperienceContent() {
           <div className="w-px h-9 bg-white/[0.06] shrink-0" />
           <StatCard value={totalCompanies} label="Companies" delay={0.2} />
           <div className="w-px h-9 bg-white/[0.06] shrink-0" />
-          <StatCard value="1+" label="Years" delay={0.3} />
+          <StatCard value="1.5+" label="Years" delay={0.3} />
           <div className="w-px h-9 bg-white/[0.06] shrink-0" />
           <StatCard value="8+" label="Dashboards" delay={0.4} />
         </div>

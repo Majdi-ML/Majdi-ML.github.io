@@ -20,7 +20,7 @@ export default function AboutContent() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="flex items-start gap-6"
+        className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left"
       >
         <img
           src={majdiPhoto}
@@ -29,15 +29,15 @@ export default function AboutContent() {
                      shadow-lg shadow-blue-500/20"
         />
         <div className="flex-1 min-w-0">
-          <h2 className="text-3xl font-bold text-white mb-1.5">{profile.name}</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1.5">{profile.name}</h2>
           <p className="text-blue-400 font-medium text-lg mb-2">{profile.title}</p>
           <p className="text-base text-white/60 leading-relaxed">{profile.tagline}</p>
-          <div className="flex flex-wrap items-center gap-4 mt-3">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 mt-3">
             <span className="flex items-center gap-2 text-sm text-white/50">
               <MapPin size={14} /> {profile.location}
             </span>
             <span className="flex items-center gap-2 text-sm text-white/50">
-              <Mail size={14} /> {profile.email}
+              <Mail size={14} className="shrink-0" /> <span className="break-all">{profile.email}</span>
             </span>
             <span className="flex items-center gap-2 text-sm text-white/50">
               <Phone size={14} /> {profile.phone}

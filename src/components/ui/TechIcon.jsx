@@ -34,6 +34,11 @@ const iconClassMap = {
   linux: 'devicon-linux-plain',
   react: 'devicon-react-original colored',
   javascript: 'devicon-javascript-plain colored',
+  fastapi: 'devicon-fastapi-plain colored',
+  flask: 'devicon-flask-original',
+  kubernetes: 'devicon-kubernetes-plain colored',
+  jira: 'devicon-jira-plain colored',
+  rest: 'devicon-openapi-plain colored',
 };
 
 export default function TechIcon({ iconKey, size = 18, className = '' }) {

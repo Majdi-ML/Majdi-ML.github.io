@@ -10,11 +10,9 @@
   --accent-purple: #a78bfa;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* Reset is handled by Tailwind's preflight (inside @layer base).
+   An unlayered `* { margin:0; padding:0 }` here would override every
+   Tailwind spacing utility (p-*, m-*, px-*...), so don't add one back. */
 
 html {
   scroll-behavior: smooth;
@@ -594,4 +592,13 @@ body {
   .window-section-card {
     padding: 1rem;
   }
+}
+
+/* Hide scrollbar but keep scrolling (taskbar on small screens) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

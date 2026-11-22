@@ -31,7 +31,7 @@ const ProfileHighlightComponent = () => {
 
               {/* Current Job */}
               <div className="pc-job-section">
-                <div className="pc-job-label">Poste Actuel</div>
+                <div className="pc-job-label">Current Position</div>
                 
                 <div className="pc-job-card">
                   <h3 className="pc-job-role">{currentJob.role}</h3>
