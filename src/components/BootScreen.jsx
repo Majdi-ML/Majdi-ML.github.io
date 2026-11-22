@@ -453,12 +453,12 @@ export default function BootScreen({ onComplete }) {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1.2, ease: 'easeInOut' }}
-      className="fixed inset-0 z-[99999] bg-[#010008] flex flex-col items-center justify-center overflow-hidden cursor-none"
+      className="boot-root fixed inset-0 z-[99999] bg-[#010008] flex flex-col items-center justify-center overflow-hidden cursor-none"
     >
       <div className="boot-cursor-glow" />
 
-      {/* 3D Galaxy Canvas */}
-      <div className="absolute inset-0">
+      {/* 3D Galaxy Canvas — its centre follows --boot-center (see .boot-canvas) */}
+      <div className="boot-canvas absolute inset-x-0">
         <Canvas
           camera={{ position: [0, 0, 12], fov: 55 }}
           dpr={[1, 2]}
@@ -476,7 +476,7 @@ export default function BootScreen({ onComplete }) {
         {showContent && (
           <>
             {/* Photo — absolute center of screen (galaxy core) */}
-            <div className="absolute z-10 inset-0 flex items-center justify-center" style={{ height: '100vh', pointerEvents: 'none' }}>
+            <div className="boot-photo-layer absolute z-10 inset-x-0 flex justify-center" style={{ pointerEvents: 'none' }}>
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={isEntering
@@ -505,7 +505,7 @@ export default function BootScreen({ onComplete }) {
                 <motion.div
                   key={i}
                   className="boot-orbit-dot"
-                  style={{ '--orbit-delay': `${i * -1.5}s`, '--orbit-size': `${250 + i * 28}px` }}
+                  style={{ '--orbit-delay': `${i * -1.5}s`, '--orbit-size': `calc(var(--boot-photo-size) * ${(1.14 + i * 0.127).toFixed(3)})` }}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 6 + i, repeat: Infinity, ease: 'linear', delay: i * 0.3 }}
                 />
@@ -525,7 +525,7 @@ export default function BootScreen({ onComplete }) {
             </div>
 
             {/* Text + Button — below the photo */}
-            <div className="absolute z-10 flex flex-col items-center" style={{ top: 'calc(50% + 145px)', left: '50%', transform: 'translateX(-50%)' }}>
+            <div className="boot-text-layer absolute z-10 inset-x-0 flex flex-col items-center px-4 text-center">
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={isEntering
@@ -589,7 +589,7 @@ export default function BootScreen({ onComplete }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.3 }}
                   transition={{ delay: 2.5, duration: 1.5 }}
-                  className="text-[11px] text-white/20 mt-4 tracking-[0.4em] uppercase font-light"
+                  className="hidden md:block text-[11px] text-white/20 mt-4 tracking-[0.4em] uppercase font-light"
                 >
                   Deplacez la souris pour deformer le champ gravitationnel
                 </motion.p>

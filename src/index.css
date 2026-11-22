@@ -141,10 +141,53 @@ body {
 }
 
 /* Holographic photo frame */
+/* Boot layout: photo centred on --boot-center, text right below it */
+.boot-root {
+  --boot-center: 50%;
+  --boot-photo-size: 220px;
+}
+
+/* Canvas still covers the whole screen, but its centre (the galaxy core)
+   sits on --boot-center: top = 2c - 100%, height = 200% - 2c */
+.boot-canvas {
+  top: calc(var(--boot-center) * 2 - 100%);
+  height: calc(200% - var(--boot-center) * 2);
+}
+
+.boot-photo-layer {
+  top: var(--boot-center);
+  transform: translateY(-50%);
+}
+
+.boot-text-layer {
+  top: calc(var(--boot-center) + var(--boot-photo-size) / 2 + 35px);
+}
+
+.boot-title {
+  white-space: nowrap;
+}
+
+/* Phones and short screens: smaller photo, content moved up so the
+   ENTER button stays visible above the browser bars */
+@media (max-width: 640px), (max-height: 720px) {
+  .boot-root {
+    --boot-center: 38%;
+    --boot-photo-size: 170px;
+  }
+
+  .boot-root .boot-glitch {
+    font-size: 2.6rem;
+  }
+
+  .boot-root .boot-subtitle {
+    font-size: 1rem;
+  }
+}
+
 .boot-holo-wrapper {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: var(--boot-photo-size);
+  height: var(--boot-photo-size);
 }
 
 .boot-holo-frame {
