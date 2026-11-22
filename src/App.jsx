@@ -112,7 +112,9 @@ function App() {
 
   return (
     <>
-      <Suspense fallback={null}>
+      {/* Same background as BootScreen while its (Three.js) chunk loads,
+          otherwise the desktop flashes on screen before the boot screen. */}
+      <Suspense fallback={!booted ? <div className="fixed inset-0 z-[99999] bg-[#010008]" /> : null}>
         <AnimatePresence>
           {!booted && <BootScreen onComplete={() => setBooted(true)} />}
         </AnimatePresence>
