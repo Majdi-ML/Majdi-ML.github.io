@@ -40,7 +40,7 @@ export default function CertificateModal({ cert, onClose }) {
             aria-modal="true"
             aria-label={cert.title}
             className="relative w-full max-w-[560px] max-h-full flex flex-col overflow-hidden rounded-lg
-                       bg-[#1c1c2e]/95 backdrop-blur-3xl border border-white/[0.1]
+                       bg-[#1c1c2e]/95 backdrop-blur-xl border border-white/[0.1]
                        shadow-[0_25px_60px_rgba(0,0,0,0.6)]"
             initial={{ opacity: 0, scale: 0.92, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}

@@ -328,7 +328,7 @@ export function Taskbar() {
             transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="fixed bottom-14 left-1/2 -translate-x-1/2 z-[9998]
                        w-[580px] max-w-[94vw] max-h-[calc(100dvh-72px)] rounded-2xl
-                       bg-[#1e1e32]/95 backdrop-blur-3xl border border-white/[0.08]
+                       bg-[#1e1e32]/95 backdrop-blur-xl border border-white/[0.08]
                        shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-y-auto overflow-x-hidden custom-scrollbar"
           >
             {/* Search */}
@@ -431,7 +431,7 @@ export function Taskbar() {
           animate={{ y: 0 }}
           transition={{ delay: 0.4, type: 'spring', stiffness: 250, damping: 28 }}
           className="taskbar-main grid grid-cols-[auto_minmax(0,1fr)_auto] items-center h-[48px] px-1 sm:px-2
-                     bg-[#1c1c2e]/80 backdrop-blur-3xl border-t border-white/[0.06]
+                     bg-[#1c1c2e]/80 backdrop-blur-xl border-t border-white/[0.06]
                      shadow-[0_-4px_30px_rgba(0,0,0,0.3)]"
         >
           {/* Left: Weather */}

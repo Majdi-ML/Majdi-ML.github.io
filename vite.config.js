@@ -9,10 +9,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
-          'framer': ['framer-motion'],
-          'react-vendor': ['react', 'react-dom'],
+        // Function form so React really lands in react-vendor (with the object
+        // form it was pulled into three-vendor, making the whole app wait for
+        // Three.js). drei is unused and no longer bundled.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (/[\\/]node_modules[\\/](three|@react-three)[\\/]/.test(id)) return 'three-vendor';
+          if (/[\\/]node_modules[\\/](framer-motion|motion-dom|motion-utils)[\\/]/.test(id)) return 'framer';
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) return 'react-vendor';
+          return undefined;
         },
       },
     },

@@ -138,7 +138,11 @@ export default function Window({ id, title, icon: Icon, children }) {
               aria-label={title}
             >
               {/* Mica-like background */}
-              <div className={`absolute inset-0 ${isActive ? 'bg-[#1c1c2e]/92' : 'bg-[#1a1a28]/88'} backdrop-blur-3xl`} />
+              {/* Fullscreen (mobile): opaque, no backdrop blur — it was invisible
+                  but expensive to repaint while scrolling */}
+              <div className={`absolute inset-0 ${fullscreen
+                ? 'bg-[#1c1c2e]'
+                : `${isActive ? 'bg-[#1c1c2e]/92' : 'bg-[#1a1a28]/88'} backdrop-blur-xl`}`} />
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] via-transparent to-white/[0.02]" />
               {isActive && !fullscreen && (
                 <div className="absolute top-0 left-3 right-3 h-[1px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent" />
